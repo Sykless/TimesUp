@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.timesup.fra.timesup.PhaseTwoThree"
+    android:background="@color/blue">
+
+    <Button
+        android:id="@+id/passButton"
+        android:layout_width="0dp"
+        android:layout_height="138dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/yellow"
+        android:fontFamily="@font/fontdiner_swanky"
+        android:onClick="clickPass"
+        android:text="Je passe !"
+        android:textColor="@color/blue"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.44"
+        app:srcCompat="@drawable/baseline_done_black_18dp" />
+
+    <Button
+        android:id="@+id/validateButton"
+        android:layout_width="0dp"
+        android:layout_height="138dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/yellow"
+        android:fontFamily="@font/fontdiner_swanky"
+        android:onClick="clickValidate"
+        android:text="Validée !"
+        android:textColor="@color/blue"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.44"
+        app:srcCompat="@drawable/baseline_done_black_18dp" />
+
+    <TextView
+        android:id="@+id/cardName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/fontdiner_swanky"
+        android:gravity="center"
+        android:text="Patate"
+        android:textColor="@color/yellow"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/bubbleList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/bubbleList"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/validateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/Bubble1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+
+        <ImageView
+            android:id="@+id/Bubble12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/circle_yellow_18dp" />
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.timesup.fra.timesup.AddCard"
+    android:background="@color/blue">
+
+    <Button
+        android:id="@+id/addCardButton"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="328dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/yellow"
+        android:fontFamily="@font/fontdiner_swanky"
+        android:onClick="launchCreateNewCard"
+        android:text="Ajouter"
+        android:textColor="@color/blue"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/addCardEditText"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/yellow"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/yellow"
+        android:textCursorDrawable="@color/yellow"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toTopOf="@+id/addCardButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.684" />
+</android.support.constraint.ConstraintLayout>

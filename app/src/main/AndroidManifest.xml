@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.timesup.fra.timesup">
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name=".TimesUpParameters"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".Home">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddCard"
+            android:windowSoftInputMode="stateVisible" />
+        <activity android:name=".CreateParty" />
+        <activity android:name=".ChooseGameMode" />
+        <activity android:name=".PhaseOne" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".AddTeams" />
+        <activity android:name=".PhaseSetup" />
+        <activity android:name=".PhaseBegin" />
+        <activity android:name=".PhaseTwoThree" />
+        <activity android:name=".Scoreboard"></activity>
+    </application>
+
+</manifest>
