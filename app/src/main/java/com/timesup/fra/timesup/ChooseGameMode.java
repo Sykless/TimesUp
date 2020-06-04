@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class ChooseGameMode extends AppCompatActivity
 {
     TimesUpParameters app;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -27,6 +28,9 @@ public class ChooseGameMode extends AppCompatActivity
 
     public void goToClassic(View view)
     {
+        intent = new Intent(this,PhaseSetup.class);
+        intent.putExtra("phaseNumber",1);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("CardList");
 
@@ -46,6 +50,7 @@ public class ChooseGameMode extends AppCompatActivity
                 }
 
                 app.setCardList(cardList);
+                startActivity(intent);
             }
 
             @Override
@@ -55,10 +60,6 @@ public class ChooseGameMode extends AppCompatActivity
                 Log.w("samarchpa", "Failed to read value.", error.toException());
             }
         });
-
-        Intent intent = new Intent(this,PhaseSetup.class);
-        intent.putExtra("phaseNumber",1);
-        startActivity(intent);
     }
 
     public void goToPersonnalize(View view)
