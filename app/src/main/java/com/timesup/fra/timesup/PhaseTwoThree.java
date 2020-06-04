@@ -2,6 +2,7 @@ package com.timesup.fra.timesup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.os.VibrationEffect;
@@ -40,6 +41,9 @@ public class PhaseTwoThree extends AppCompatActivity
     Handler hideValidate = new Handler();
     Handler launchBeginPhase = new Handler();
 
+    MediaPlayer validateSound;
+    MediaPlayer passSound;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,6 +58,9 @@ public class PhaseTwoThree extends AppCompatActivity
         passButton = findViewById(R.id.passButton);
         cardName = findViewById(R.id.cardName);
         cardName.setText(cardList.remove(0));
+
+        validateSound = MediaPlayer.create(this, R.raw.coin);
+        passSound = MediaPlayer.create(this, R.raw.whoosh);
 
         Intent intent = getIntent();
         timerString = intent.getStringExtra("timer");
@@ -168,6 +175,8 @@ public class PhaseTwoThree extends AppCompatActivity
     {
         if (validate)
         {
+            validateSound.start();
+
             if (lastCardName.length() > 0)
             {
                 hasClicked = true;
@@ -183,6 +192,7 @@ public class PhaseTwoThree extends AppCompatActivity
         }
         else
         {
+            passSound.start();
             cardList.add(cardName.getText().toString());
         }
 
@@ -228,7 +238,10 @@ public class PhaseTwoThree extends AppCompatActivity
             {
                 public void run()
                 {
-                    teamNumber = (teamNumber + 1) % teamList.size();
+                    if ( timer / (double) finalTimer < 0.75)
+                    {
+                        teamNumber = (teamNumber + 1) % teamList.size();
+                    }
 
                     Intent intent;
 
@@ -248,5 +261,7 @@ public class PhaseTwoThree extends AppCompatActivity
                 }
             },5000);
         }
+
+        System.out.println("Cards : (" + cardList.size() + ") : " +  cardList);
     }
 }

@@ -45,12 +45,15 @@ public class PhaseSetup extends AppCompatActivity
         }
         else
         {
-            timer.setText("0:30");
+            timer.setText("0:45");
         }
 
         TimesUpParameters app = (TimesUpParameters) getApplicationContext();
         ArrayList<String> cardList = new ArrayList<String>(app.getCardList());
         Collections.shuffle(cardList);
+
+        System.out.println("Test putain : " + cardList);
+
         app.setCurrentCardList(cardList);
     }
 
@@ -138,7 +141,7 @@ public class PhaseSetup extends AppCompatActivity
         if (phaseNumber == 1)
         {
             Random rand = new Random();
-            teamNumber = rand.nextInt(app.getTeamList().size() - 1);
+            teamNumber = rand.nextInt(app.getTeamList().size());
         }
 
         intent = new Intent(this,PhaseBegin.class);
@@ -147,5 +150,11 @@ public class PhaseSetup extends AppCompatActivity
         intent.putExtra("timer",timer.getText().toString());
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        return;
     }
 }

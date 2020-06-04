@@ -23,7 +23,6 @@ public class TimesUpParameters extends Application
     public ArrayList<String> getCurrentCardList() {
         return currentCardList;
     }
-
     public void setCurrentCardList(ArrayList<String> currentCardList) {
         this.currentCardList = currentCardList;
     }
@@ -32,7 +31,6 @@ public class TimesUpParameters extends Application
     {
         return teamList;
     }
-
     public void setTeamList(ArrayList<Team> teamList)
     {
         this.teamList = teamList;
@@ -42,7 +40,6 @@ public class TimesUpParameters extends Application
     {
         return cardList;
     }
-
     public void setCardList(ArrayList<String> cardList)
     {
         this.cardList = cardList;
@@ -52,7 +49,6 @@ public class TimesUpParameters extends Application
     {
         return checkpoint;
     }
-
     public void setCheckpoint(long checkpoint)
     {
         this.checkpoint = checkpoint;

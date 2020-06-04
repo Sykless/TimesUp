@@ -52,4 +52,10 @@ public class PhaseBegin extends AppCompatActivity
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        return;
+    }
 }

@@ -2,6 +2,7 @@ package com.timesup.fra.timesup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.os.VibrationEffect;
@@ -38,6 +39,8 @@ public class PhaseOne extends AppCompatActivity
     Handler hideValidate = new Handler();
     Handler launchBeginPhase = new Handler();
 
+    MediaPlayer validateSound;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -46,11 +49,16 @@ public class PhaseOne extends AppCompatActivity
 
         app = (TimesUpParameters) getApplicationContext();
         cardList = app.getCurrentCardList();
+
+        System.out.println("Phase one card list : " + cardList);
+
         teamList = app.getTeamList();
         bubbleList = findViewById(R.id.bubbleList);
         validateButton = findViewById(R.id.validateButton);
         cardName = findViewById(R.id.cardName);
         cardName.setText(cardList.remove(0));
+
+        validateSound = MediaPlayer.create(this, R.raw.coin);
 
         Intent intent = getIntent();
         timerString = intent.getStringExtra("timer");
@@ -140,6 +148,10 @@ public class PhaseOne extends AppCompatActivity
 
     public void nextCard(View view)
     {
+        validateSound.start();
+
+        System.out.println("Validate (" + validateCards.size() + ") : " +  validateCards);
+
         if (lastCardName.length() > 0)
         {
             hasClicked = true;
@@ -187,7 +199,10 @@ public class PhaseOne extends AppCompatActivity
             {
                 public void run()
                 {
-                    teamNumber = (teamNumber + 1) % teamList.size();
+                    if ( timer / (double) finalTimer < 0.75)
+                    {
+                        teamNumber = (teamNumber + 1) % teamList.size();
+                    }
 
                     Intent intent = new Intent(getApplicationContext(),PhaseSetup.class);
                     intent.putExtra("phaseNumber",2);
