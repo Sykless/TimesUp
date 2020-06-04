@@ -69,16 +69,23 @@ public class Scoreboard extends AppCompatActivity
 
         ArrayList<Team> teamList = app.getTeamList();
 
+        LinearLayout.LayoutParams teamParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        teamParams.setMargins(32,32,10,10);
+
+        LinearLayout.LayoutParams roundParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        roundParams.setMargins(64,5,10,10);
+
+
         for (Team team : teamList)
         {
             int[] teamScore = {team.getScorePhaseOne(), team.getScorePhaseTwo(), team.getScorePhaseThree()};
             TextView teamName = new TextView(this);
 
             teamName.setText(team.getTeamName() + " : " + (teamScore[0] + teamScore[1] + teamScore[2]));
-            teamName.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
+            teamName.setTextSize(TypedValue.COMPLEX_UNIT_PX, 80);
             teamName.setTypeface(ResourcesCompat.getFont(this,R.font.fontdiner_swanky));
             teamName.setTextColor(getResources().getColor(R.color.yellow));
-            teamName.setLines(1);
+            teamName.setLayoutParams(teamParams);
 
             scoreBoard.addView(teamName);
 
@@ -86,24 +93,17 @@ public class Scoreboard extends AppCompatActivity
             {
                 TextView score = new TextView(this);
 
-                teamName.setText("Manche " + (phase + 1) + " : " + teamScore[phase]);
-                teamName.setTextSize(TypedValue.COMPLEX_UNIT_PX, 35);
-                teamName.setTypeface(ResourcesCompat.getFont(this,R.font.fontdiner_swanky));
-                teamName.setTextColor(getResources().getColor(R.color.yellow));
-                teamName.setLines(1);
+                score.setText("Manche " + (phase + 1) + " : " + teamScore[phase]);
+                score.setTextSize(TypedValue.COMPLEX_UNIT_PX, 60);
+                score.setTypeface(ResourcesCompat.getFont(this,R.font.fontdiner_swanky));
+                score.setTextColor(getResources().getColor(R.color.yellow));
+                score.setLayoutParams(roundParams);
+
+                scoreBoard.addView(score);
             }
+
+
         }
-
-
-
-        ((TextView) findViewById(R.id.team1)).setText(teamList.get(0).getTeamName() + " : " + (teamList.get(0).getScorePhaseOne() + teamList.get(0).getScorePhaseTwo() + teamList.get(0).getScorePhaseThree()));
-        ((TextView) findViewById(R.id.team2)).setText(teamList.get(1).getTeamName() + " : " + (teamList.get(1).getScorePhaseOne() + teamList.get(1).getScorePhaseTwo() + teamList.get(1).getScorePhaseThree()));
-        ((TextView) findViewById(R.id.textView2)).setText("Manche 1 : " + teamList.get(0).getScorePhaseOne());
-        ((TextView) findViewById(R.id.textView3)).setText("Manche 2 : " + teamList.get(0).getScorePhaseTwo());
-        ((TextView) findViewById(R.id.textView4)).setText("Manche 3 : " + teamList.get(0).getScorePhaseThree());
-        ((TextView) findViewById(R.id.textView6)).setText("Manche 1 : " + teamList.get(1).getScorePhaseOne());
-        ((TextView) findViewById(R.id.textView7)).setText("Manche 2 : " + teamList.get(1).getScorePhaseTwo());
-        ((TextView) findViewById(R.id.textView8)).setText("Manche 3 : " + teamList.get(1).getScorePhaseThree());
     }
 
     public void goToHome(View view)

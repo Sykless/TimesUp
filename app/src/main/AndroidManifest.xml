@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".DebugMode"></activity>
         <activity android:name=".Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +36,7 @@
         <activity android:name=".PhaseSetup" />
         <activity android:name=".PhaseBegin" />
         <activity android:name=".PhaseTwoThree" />
-        <activity android:name=".Scoreboard"></activity>
+        <activity android:name=".Scoreboard" />
     </application>
 
 </manifest>

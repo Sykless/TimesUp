@@ -1,6 +1,7 @@
 package com.timesup.fra.timesup;
 
 import android.content.Intent;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -113,6 +114,12 @@ public class Home extends AppCompatActivity
             Intent intent = new Intent(this,CreateParty.class);
             startActivity(intent);
         }
+    }
+
+    public void goToDebugMode(View view)
+    {
+        Intent intent = new Intent(this,DebugMode.class);
+        startActivity(intent);
     }
 }
 
