@@ -22,8 +22,16 @@ public class AddTeams extends AppCompatActivity
 
     int teamNumber = 0;
 
-    String[] animalNames = {"Écureuils", "Cachalots","Chatons","Canards","Albatros","Babouins","Koalas","Caribous","Chamois","Dindons","Sangliers","Mulots","Opossums","Ouistitis","Alpagas","Pélicans","Poulets","Suricates","Yacks","Bouquetins"};
-    String[] adjectifs = {"bicurieux","mal-aimés","frustrés","malades","perturbés","sales","moyens","sexy","boiteux","moelleux","drogués","asociaux","assistés","nazes","racistes","radins","rebelles","castrés","planqués","paumés"};
+    String[] animalNames = {"Écureuils", "Cachalots","Chatons","Canards","Albatros","Babouins","Koalas",
+            "Caribous","Chamois","Dindons","Sangliers","Mulots","Opossums","Ouistitis","Alpagas",
+            "Pélicans","Poulets","Suricates","Yacks","Bouquetins","Paresseux","Paons",
+            "Lamas", "Canartichos"};
+    String[] adjectifs = {"bicurieux","mal-aimés","frustrés","malades","perturbés","sales","moyens",
+            "sexy","boiteux","moelleux","drogués","asociaux","assistés","nazes","racistes","radins",
+            "rebelles","castrés","planqués","paumés", "scandinaves", "rutilants","péremptoires",
+            "ni de droite ni de gauche","vegans","bourlingueurs","indisposés"};
+
+    // "Loutres", "Belettes"
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -98,7 +106,7 @@ public class AddTeams extends AppCompatActivity
         // Creating a new TextView
         TextView teamName = new TextView(this);
         Random rand = new Random();
-        String name = animalNames[rand.nextInt(19)] + " " + adjectifs[rand.nextInt(19)];
+        String name = animalNames[rand.nextInt(animalNames.length)] + " " + adjectifs[rand.nextInt(adjectifs.length)];
 
         teamName.setText(name);
         teamName.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
