@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +21,7 @@ public class Home extends AppCompatActivity
 {
     DatabaseReference ref;
     FirebaseDatabase database;
+    Button shuffleButton;
 
     long databaseSize;
     boolean sizeSetup = false;
@@ -29,6 +31,8 @@ public class Home extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
+
+        shuffleButton = findViewById(R.id.button7);
 
         if (getSupportActionBar() != null)
         {
@@ -47,10 +51,9 @@ public class Home extends AppCompatActivity
 
                 if (!sizeSetup)
                 {
+                    System.out.println("Size setup");
                     sizeSetup = true;
                 }
-
-                System.out.println("Database size : " + databaseSize);
             }
 
             @Override
@@ -64,6 +67,10 @@ public class Home extends AppCompatActivity
 
     public void shuffleDatabase(View view)
     {
+        shuffleButton.setText("Mélange en cours...");
+        shuffleButton.setClickable(false);
+        shuffleButton.getBackground().setAlpha(128);
+
         ref.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
@@ -82,6 +89,10 @@ public class Home extends AppCompatActivity
                 {
                     ref.child(String.valueOf(i)).setValue(cardList.get(i));
                 }
+
+                shuffleButton.setText("Mélanger les cartes");
+                shuffleButton.setClickable(true);
+                shuffleButton.getBackground().setAlpha(255);
             }
 
             @Override
