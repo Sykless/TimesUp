@@ -19,10 +19,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddCard extends AppCompatActivity
 {
+    public static final int SIMILARITY_PERCENTAGE_LIMIT = 50;
+
     DatabaseReference ref;
     FirebaseDatabase database;
 
@@ -35,13 +41,18 @@ public class AddCard extends AppCompatActivity
     boolean dontCare = false;
 
     ArrayList<String> cardsToRemove;
-    ArrayList<Integer> cardsIdToRemove;
+    Map<String, Integer> similarCards = new HashMap<String, Integer>();
     String valueOfId = "";
 
     Runnable createCard;
     Context context;
 
     ArrayList<String> databaseList;
+    ArrayList<String> closeCardsList = new ArrayList<>();
+
+    String databaseCard;
+    String closestCard;
+    int biggestDifference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -94,6 +105,127 @@ public class AddCard extends AppCompatActivity
         }
     }
 
+    void createNewCard(final String cardName)
+    {
+        final Handler registeredHandler = new Handler();
+        final Handler checkHandler = new Handler();
+
+        dontCare = false;
+        similarCards.clear();
+        createCard = new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                ref.addListenerForSingleValueEvent(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(final DataSnapshot dataSnapshot)
+                    {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                        {
+                            databaseCard = postSnapshot.getValue(String.class);
+                            int similarityPercentage = (int) Math.floor(100*similarity(cardName, databaseCard));
+
+                            if (similarityPercentage > SIMILARITY_PERCENTAGE_LIMIT)
+                            {
+                                similarCards.put(databaseCard, similarityPercentage);
+                            }
+                        }
+
+                        if (similarCards.isEmpty() || dontCare)
+                        {
+                            Toast.makeText(getApplicationContext(), "Nouvelle carte " + cardName + " ajoutée avec succès !", Toast.LENGTH_LONG).show();
+
+                            final long originalID = databaseSize;
+                            System.out.println("Trying to connect with number " + originalID + " with name " + cardName);
+
+                            if (dataSnapshot.child(""+originalID).getValue() == null)
+                            {
+                                ref.child(""+originalID).setValue(cardName);
+                                System.out.println("Registering " + cardName + "...");
+
+                                checkHandler.postDelayed(new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        ref.addListenerForSingleValueEvent(new ValueEventListener()
+                                        {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot)
+                                            {
+                                                if (dataSnapshot.child(""+originalID).getValue(String.class).equals(cardName))
+                                                {
+                                                    System.out.println("Checking verified with " + cardName + ", everything went right.");
+                                                }
+                                                else
+                                                {
+                                                    System.out.println("Checking verified with " + cardName + ", problem encountered. Trying again...");
+                                                    createNewCard(cardName);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError error)
+                                            {
+                                                // Failed to read value
+                                                Log.w("samarchpa", "Failed to read value.", error.toException());
+                                            }
+                                        });
+                                    }
+                                }, 1000);
+                            }
+                            else
+                            {
+                                registeredHandler.postDelayed(createCard,1000);
+                            }
+                        }
+                        else
+                        {
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which){
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            dontCare = true;
+                                            registeredHandler.postDelayed(createCard,1000);
+                                            break;
+
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            dontCare = false;
+                                            Toast.makeText(getApplicationContext(), "La carte " + cardName + " n'a pas été ajoutée.", Toast.LENGTH_LONG).show();
+                                            break;
+                                    }
+                                }
+                            };
+
+                            Object[] sortedSimilarCards = getSortedCardList(similarCards);
+                            String similarCardsString = "";
+
+                            for (Object element : sortedSimilarCards) {
+                                similarCardsString += " - " + ((Map.Entry<String, Integer>) element).getKey() + " (" + ((Map.Entry<String, Integer>) element).getValue() + "%)" + "\n";
+                            }
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("La carte " + cardName + " est similaires aux cartes existantes suivantes : " + "\n" + similarCardsString + "Voulez-vous vraiment l'ajouter ?").setPositiveButton("Oui", dialogClickListener)
+                                    .setNegativeButton("Non", dialogClickListener).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error)
+                    {
+                        // Failed to read value
+                        Log.w("samarchpa", "Failed to read value.", error.toException());
+                    }
+                });
+            }
+        };
+
+        registeredHandler.post(createCard);
+    }
+/*
     void checkDoublons()
     {
         final Handler registeredHandler = new Handler();
@@ -210,120 +342,7 @@ public class AddCard extends AppCompatActivity
             }
         });
     }
-
-    void createNewCard(final String name)
-    {
-        final Handler registeredHandler = new Handler();
-        final Handler checkHandler = new Handler();
-
-        dontCare = false;
-        notInside = true;
-        createCard = new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                ref.addListenerForSingleValueEvent(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(final DataSnapshot dataSnapshot)
-                    {
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
-                        {
-                            if (postSnapshot.getValue(String.class).toLowerCase().equals(name.toLowerCase()))
-                            {
-                                notInside = false;
-                                break;
-                            }
-                        }
-
-                        if (notInside || dontCare)
-                        {
-                            Toast.makeText(getApplicationContext(), "Nouvelle carte " + name + " ajoutée avec succès !", Toast.LENGTH_LONG).show();
-
-                            final long originalID = databaseSize;
-                            System.out.println("Trying to connect with number " + originalID + " with name " + name);
-
-                            if (dataSnapshot.child(""+originalID).getValue() == null)
-                            {
-                                ref.child(""+originalID).setValue(name);
-                                System.out.println("Registering " + name + "...");
-
-                                checkHandler.postDelayed(new Runnable()
-                                {
-                                    @Override
-                                    public void run()
-                                    {
-                                        ref.addListenerForSingleValueEvent(new ValueEventListener()
-                                        {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot)
-                                            {
-                                                if (dataSnapshot.child(""+originalID).getValue(String.class).equals(name))
-                                                {
-                                                    System.out.println("Checking verified with " + name + ", everything went right.");
-                                                }
-                                                else
-                                                {
-                                                    System.out.println("Checking verified with " + name + ", problem encountered. Trying again...");
-                                                    createNewCard(name);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError error)
-                                            {
-                                                // Failed to read value
-                                                Log.w("samarchpa", "Failed to read value.", error.toException());
-                                            }
-                                        });
-                                    }
-                                }, 1000);
-                            }
-                            else
-                            {
-                                registeredHandler.postDelayed(createCard,1000);
-                            }
-                        }
-                        else
-                        {
-                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    switch (which){
-                                        case DialogInterface.BUTTON_POSITIVE:
-                                            dontCare = true;
-                                            registeredHandler.postDelayed(createCard,1000);
-                                            break;
-
-                                        case DialogInterface.BUTTON_NEGATIVE:
-                                            dontCare = false;
-                                            Toast.makeText(getApplicationContext(), "La carte " + name + " n'a pas été ajoutée.", Toast.LENGTH_LONG).show();
-                                            break;
-                                    }
-                                }
-                            };
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("La carte " + name + " existe déjà dans la base de données. Voulez-vous vraiment l'ajouter ?").setPositiveButton("Oui", dialogClickListener)
-                                    .setNegativeButton("Non", dialogClickListener).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error)
-                    {
-                        // Failed to read value
-                        Log.w("samarchpa", "Failed to read value.", error.toException());
-                    }
-                });
-            }
-        };
-
-        registeredHandler.postDelayed(createCard, 0);
-    }
-
-
+*/
     public String removeAccents(String card)
     {
         String newCard = "";
@@ -439,5 +458,18 @@ public class AddCard extends AppCompatActivity
             }
         }
         return costs[s2.length()];
+    }
+
+    private Object[] getSortedCardList(Map<String, Integer> cardList) {
+        Object[] sortedCardList = cardList.entrySet().toArray();
+
+        Arrays.sort(sortedCardList, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Map.Entry<String, Integer>) o2).getValue()
+                        .compareTo(((Map.Entry<String, Integer>) o1).getValue());
+            }
+        });
+
+        return sortedCardList;
     }
 }

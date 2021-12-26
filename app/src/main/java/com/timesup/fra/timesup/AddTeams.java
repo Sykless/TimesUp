@@ -26,12 +26,10 @@ public class AddTeams extends AppCompatActivity
             "Caribous","Chamois","Dindons","Sangliers","Mulots","Opossums","Ouistitis","Alpagas",
             "Pélicans","Poulets","Suricates","Yacks","Bouquetins","Paresseux","Paons",
             "Lamas", "Canartichos"};
-    String[] adjectifs = {"bicurieux","mal-aimés","frustrés","malades","perturbés","sales","moyens",
-            "sexy","boiteux","moelleux","drogués","asociaux","assistés","nazes","racistes","radins",
-            "rebelles","castrés","planqués","paumés", "scandinaves", "rutilants","péremptoires",
-            "ni de droite ni de gauche","vegans","bourlingueurs","indisposés"};
-
-    // "Loutres", "Belettes"
+    String[] adjectifs = {"bicurieux","sales","moyens", "sexy","boiteux","moelleux","drogués",
+            "asociaux","assistés","nazes","racistes","rebelles","planqués","paumés", "rutilants","péremptoires",
+            "ni de gauche ni de droite","vegans","bourlingueurs","indisposés", "portatifs","télévisuels",
+            "soyeux", "pliables", "pro-Zemmour", "insoumis", "quantiques", "croustillants", "semi-croustillants"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
