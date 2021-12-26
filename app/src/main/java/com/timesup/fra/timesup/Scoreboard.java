@@ -49,9 +49,9 @@ public class Scoreboard extends AppCompatActivity
             {
                 long databaseSize = dataSnapshot.getChildrenCount();
 
-                if (app.getCardFirstID() + 40 < databaseSize)
+                if (app.getCardFirstID() + app.getCardsNumber() < databaseSize)
                 {
-                    app.setCardFirstID(app.getCardFirstID() + 40);
+                    app.setCardFirstID(app.getCardFirstID() + app.getCardsNumber());
                 }
                 else
                 {

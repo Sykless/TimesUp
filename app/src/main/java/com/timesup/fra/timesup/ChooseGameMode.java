@@ -30,36 +30,7 @@ public class ChooseGameMode extends AppCompatActivity
     {
         intent = new Intent(this,PhaseSetup.class);
         intent.putExtra("phaseNumber",1);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("CardList");
-
-        app = (TimesUpParameters) getApplicationContext();
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot)
-            {
-                ArrayList<String> cardList = new ArrayList<>();
-                long id = app.getCardFirstID();
-
-                for (long i = id ; i < 40 + id ; i++)
-                {
-                    cardList.add(dataSnapshot.child(String.valueOf(i)).getValue(String.class));
-                }
-
-                app.setCardList(cardList);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error)
-            {
-                // Failed to read value
-                Log.w("samarchpa", "Failed to read value.", error.toException());
-            }
-        });
+        startActivity(intent);
     }
 
     public void goToPersonnalize(View view)

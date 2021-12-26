@@ -110,4 +110,59 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teamName" />
 
+    <Button
+        android:id="@+id/buttonRemoveCards"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/yellow"
+        android:fontFamily="@font/fontdiner_swanky"
+        android:onClick="clickMinusCard"
+        android:text="-"
+        android:textColor="@color/blue"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button11" />
+
+    <TextView
+        android:id="@+id/cardsNumber"
+        android:layout_width="0dp"
+        android:layout_height="75sp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/yellow"
+        android:ems="10"
+        android:fontFamily="@font/fontdiner_swanky"
+        android:gravity="center"
+        android:text="40 cartes"
+        android:textColor="@color/yellow"
+        android:textCursorDrawable="@color/yellow"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddCards"
+        app:layout_constraintStart_toEndOf="@+id/buttonRemoveCards"
+        app:layout_constraintTop_toBottomOf="@+id/timer" />
+
+    <Button
+        android:id="@+id/buttonAddCards"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/yellow"
+        android:fontFamily="@font/fontdiner_swanky"
+        android:onClick="clickPlusCard"
+        android:text="+"
+        android:textColor="@color/blue"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button12" />
+
 </android.support.constraint.ConstraintLayout>

@@ -9,16 +9,22 @@ public class TimesUpParameters extends Application
     ArrayList<Team> teamList = new ArrayList<>();
     ArrayList<String> currentCardList = new ArrayList<>();
     long checkpoint = -1;
+    long cardFirstID = 0;
+    int cardsNumber;
 
     public long getCardFirstID() {
         return cardFirstID;
     }
-
     public void setCardFirstID(long cardFirstID) {
         this.cardFirstID = cardFirstID;
     }
 
-    long cardFirstID = 0;
+    public int getCardsNumber() {
+        return cardsNumber;
+    }
+    public void setCardsNumber(int cardsNumber) {
+        this.cardsNumber = cardsNumber;
+    }
 
     public ArrayList<String> getCurrentCardList() {
         return currentCardList;
