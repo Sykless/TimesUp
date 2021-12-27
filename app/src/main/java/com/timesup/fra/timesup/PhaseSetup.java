@@ -174,7 +174,7 @@ public class PhaseSetup extends AppCompatActivity
         String cardsNumberString = cardsNumberView.getText().toString();
         int cards = Integer.parseInt(cardsNumberString.split(" ")[0]);
 
-        if (cards == 50)
+        if (cards == 90)
         {
             buttonAddCards.getBackground().setAlpha(128);
             buttonAddCards.setClickable(false);
