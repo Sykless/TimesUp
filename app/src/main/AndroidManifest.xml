@@ -24,8 +24,6 @@
         <activity
             android:name=".AddCard"
             android:windowSoftInputMode="stateVisible" />
-        <activity android:name=".CreateParty" />
-        <activity android:name=".ChooseGameMode" />
         <activity android:name=".PhaseOne" />
 
         <meta-data

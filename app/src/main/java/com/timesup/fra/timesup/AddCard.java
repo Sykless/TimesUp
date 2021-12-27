@@ -70,8 +70,6 @@ public class AddCard extends AppCompatActivity
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("CardList");
 
-        // checkDoublons();
-
         ref.addValueEventListener(new ValueEventListener()
         {
             @Override
@@ -225,124 +223,7 @@ public class AddCard extends AppCompatActivity
 
         registeredHandler.post(createCard);
     }
-/*
-    void checkDoublons()
-    {
-        final Handler registeredHandler = new Handler();
 
-        dontCare = false;
-        notInside = true;
-        cardsToRemove = new ArrayList<>();
-        cardsIdToRemove = new ArrayList<>();
-
-        Runnable checkDoublonsProcedure = new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                ref.addListenerForSingleValueEvent(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(final DataSnapshot dataSnapshot)
-                    {
-                        long databaseSize = dataSnapshot.getChildrenCount();
-
-                        for (long i = 0 ; i < databaseSize ; i++)
-                        {
-                            String cardReference = dataSnapshot.child(String.valueOf(i)).getValue(String.class);
-                            String card = dataSnapshot.child(String.valueOf(1000)).getValue(String.class);
-
-                            if (card != null)
-                            {
-                                System.out.println("OUI");
-                            }
-
-                            for (long j = i + 1 ; j < databaseSize ; j++)
-                            {
-                                valueOfId = String.valueOf(j);
-
-                                String cardToCompare = dataSnapshot.child(String.valueOf(j)).getValue(String.class);
-                                double difference = similarity(cardReference, cardToCompare);
-
-                                if (difference == 1)
-                                {
-                                    if (!cardsToRemove.contains(cardReference) && !cardsToRemove.contains(cardToCompare))
-                                    {
-                                        cardsToRemove.add(cardReference);
-                                        cardsIdToRemove.add((int) i);
-                                        System.out.println("Card " + cardReference + " (id = " + i + ") similar to card " + cardToCompare + " (id = " + j + ") at " + Math.round(100 * difference) + "%");
-                                    }
-                                }
-                            }
-                        }
-
-                        Collections.sort(cardsToRemove, String.CASE_INSENSITIVE_ORDER);
-                        Collections.reverse(cardsToRemove);
-
-                        System.out.println("cardToRemove : " + cardsToRemove);
-                        System.out.println("cardIdsToRemove : " + cardsIdToRemove);
-                        System.out.println();
-                        System.out.println("Number of similar cards : " + cardsToRemove.size());
-                        Toast.makeText(AddCard.this, "Number of similar cards : " + cardsToRemove.size(), Toast.LENGTH_SHORT).show();
-
-                        initiateDeletion();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error)
-                    {
-                        // Failed to read value
-                        Log.w("samarchpa", "Failed to read value.", error.toException());
-                    }
-                });
-            }
-        };
-
-        registeredHandler.postDelayed(checkDoublonsProcedure, 0);
-    }
-
-    void initiateDeletion()
-    {
-        databaseList = new ArrayList<>();
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot)
-            {
-                long databaseSize = dataSnapshot.getChildrenCount();
-
-                for (long i = 0 ; i < cardsIdToRemove.size() ; i++)
-                {
-                    dataSnapshot.child(""+cardsIdToRemove.get((int) i)).getRef().setValue(null);
-                }
-
-                for (long i = 0 ; i < databaseSize ; i++)
-                {
-                    String card = dataSnapshot.child(String.valueOf(i)).getValue(String.class);
-
-                    if (card != null && !cardsIdToRemove.contains((int) i))
-                    {
-                        databaseList.add(card);
-                        dataSnapshot.child(""+i).getRef().setValue(null);
-                    }
-                }
-
-                for (long i = 0 ; i < databaseList.size() ; i++)
-                {
-                    dataSnapshot.child(""+i).getRef().setValue(databaseList.get((int) i));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error)
-            {
-                // Failed to read value
-                Log.w("samarchpa", "Failed to read value.", error.toException());
-            }
-        });
-    }
-*/
     public String removeAccents(String card)
     {
         String newCard = "";

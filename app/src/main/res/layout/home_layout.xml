@@ -34,7 +34,7 @@
         android:layout_marginStart="16dp"
         android:backgroundTint="@color/yellow"
         android:fontFamily="@font/fontdiner_swanky"
-        android:onClick="goToChoose"
+        android:onClick="goToPhaseSetup"
         android:text="Jouer une partie"
         android:textColor="@color/blue"
         android:textSize="28sp"

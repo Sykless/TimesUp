@@ -110,21 +110,10 @@ public class Home extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void goToChoose(View view)
+    public void goToPhaseSetup(View view)
     {
-        TimesUpParameters app = (TimesUpParameters) getApplicationContext();
-        long checkpoint = app.getCheckpoint();
-
-        if (checkpoint == -1)
-        {
-            Intent intent = new Intent(this,AddTeams.class);
-            startActivity(intent);
-        }
-        else
-        {
-            Intent intent = new Intent(this,CreateParty.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this,AddTeams.class);
+        startActivity(intent);
     }
 
     public void goToDebugMode(View view)

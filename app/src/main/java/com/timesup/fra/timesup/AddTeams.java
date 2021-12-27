@@ -61,7 +61,8 @@ public class AddTeams extends AppCompatActivity
 
         app.setTeamList(teamNameList);
 
-        Intent intent = new Intent(this,ChooseGameMode.class);
+        Intent intent = new Intent(this,PhaseSetup.class);
+        intent.putExtra("phaseNumber",1);
         startActivity(intent);
     }
 
