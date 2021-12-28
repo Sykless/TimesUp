@@ -1,13 +1,28 @@
 package com.timesup.fra.timesup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Debug;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,12 +34,18 @@ import java.util.Collections;
 
 public class Home extends AppCompatActivity
 {
-    DatabaseReference ref;
+    DatabaseReference refCardList;
     FirebaseDatabase database;
-    Button shuffleButton;
 
-    long databaseSize;
-    boolean sizeSetup = false;
+    Button shuffleButton;
+    Button addCardButton;
+    Button playButton;
+    ImageButton debugButton;
+    ImageView logo;
+
+    FirebaseAuth mAuth;
+
+    int logoClicks = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,37 +53,105 @@ public class Home extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
 
-        shuffleButton = findViewById(R.id.button7);
+        shuffleButton = findViewById(R.id.shuffleButton);
+        addCardButton = findViewById(R.id.addCardButton);
+        playButton = findViewById(R.id.playButton);
+        debugButton = findViewById(R.id.debugButton);
+        logo = findViewById(R.id.logo);
 
         if (getSupportActionBar() != null)
         {
             getSupportActionBar().hide();
         }
 
-        database = FirebaseDatabase.getInstance();
-        ref = database.getReference("CardList");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
 
-        ref.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                databaseSize = dataSnapshot.getChildrenCount();
+        // User is signed in
+        if (user != null) {
+            playButton.setVisibility(View.VISIBLE);
+            shuffleButton.setVisibility(View.VISIBLE);
 
-                if (!sizeSetup)
-                {
-                    System.out.println("Size setup");
-                    sizeSetup = true;
+            // Admin user
+            if (!user.isAnonymous()) {
+                addCardButton.setVisibility(View.VISIBLE);
+                debugButton.setVisibility(View.VISIBLE);
+            }
+        }
+        // No user is signed in
+        else {
+            mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    playButton.setVisibility(View.VISIBLE);
+
+                    if (task.isSuccessful()) {
+                        shuffleButton.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        Toast.makeText(Home.this, "Échec de l'authentification.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onCancelled(DatabaseError error)
-            {
-                // Failed to read value
-                Log.w("samarchpa", "Failed to read value.", error.toException());
+        database = FirebaseDatabase.getInstance();
+        refCardList = database.getReference("CardList");
+
+        logo.setOnClickListener( new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            logoClicks++;
+
+            if (logoClicks > 10) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
+                builder.setTitle("Entrez le mot de passe admin :");
+
+                // Set up the input
+                final EditText input = new EditText(Home.this);
+                input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                input.setTransformationMethod(new PasswordTransformationMethod());
+
+                FrameLayout container = new FrameLayout(Home.this);
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.leftMargin = 100;
+                params.rightMargin = 100;
+                input.setLayoutParams(params);
+                container.addView(input);
+
+                builder.setView(container);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mAuth.signInWithEmailAndPassword("admin@timesup.fra", input.getText().toString())
+                                .addOnCompleteListener(Home.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            addCardButton.setVisibility(View.VISIBLE);
+                                            debugButton.setVisibility(View.VISIBLE);
+                                        } else {
+                                            Toast.makeText(Home.this, "Échec de l'authentification.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    }
+                });
+
+                builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
-        });
+        }
+    });
     }
 
     public void shuffleDatabase(View view)
@@ -71,7 +160,7 @@ public class Home extends AppCompatActivity
         shuffleButton.setClickable(false);
         shuffleButton.getBackground().setAlpha(128);
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        refCardList.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
@@ -87,7 +176,7 @@ public class Home extends AppCompatActivity
 
                 for (int i = 0 ; i < cardList.size() ; i++)
                 {
-                    ref.child(String.valueOf(i)).setValue(cardList.get(i));
+                    refCardList.child(String.valueOf(i)).setValue(cardList.get(i));
                 }
 
                 shuffleButton.setText("Mélanger les cartes");
